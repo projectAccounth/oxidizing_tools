@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "oxidizing_tools",
+  "version": "${version}",
+  "name": "Oxidizing Tools",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/danismod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.not_thefirst.oxidizing_tools.client.OxidizingToolsClient"
+    ],
+    "main": [
+      "net.not_thefirst.oxidizing_tools.OxidizingTools"
+    ]
+  },
+  "mixins": [
+    "oxidizing_tools.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "fabric": "*",
+    "minecraft": "1.21.4"
+  }
+}

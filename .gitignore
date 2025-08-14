@@ -1,0 +1,12 @@
+# not-for-commit folders
+.gradle/
+build/
+run/
+.vscode/
+bin/
+
+# exclusive
+textures/
+
+# workspace exceptions
+!.vscode/settings.json
