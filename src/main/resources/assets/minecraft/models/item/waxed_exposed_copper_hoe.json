@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/waxed_exposed_waxed_copper_hoe"
+  }
+}

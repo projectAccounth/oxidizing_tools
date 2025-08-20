@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "waxed_shovel",
+  "ingredients": [
+    "minecraft:weathered_copper_shovel",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:waxed_weathered_copper_shovel"
+  }
+}

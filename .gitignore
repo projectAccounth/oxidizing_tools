@@ -1,12 +1,15 @@
-# not-for-commit folders
+# Not for commit folders
 .gradle/
 build/
 run/
 .vscode/
 bin/
 
-# exclusive
+# Exclusive
 textures/
 
-# workspace exceptions
+# Workspace exceptions
 !.vscode/settings.json
+
+# Convenient scripts
+*.py

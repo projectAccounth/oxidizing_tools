@@ -6,10 +6,10 @@ import net.not_thefirst.oxidizing_tools.OxidizingTools;
 import net.not_thefirst.oxidizing_tools.components.ItemIdHelper;
 import net.not_thefirst.oxidizing_tools.components.ModComponents;
 import net.not_thefirst.oxidizing_tools.registry.InMemoryTicks;
-
+import net.not_thefirst.oxidizing_tools.registry.OxidationRegistry;
 public final class TickSaveUtils {
     public static void saveStackTicksToComponent(ServerPlayerEntity player, ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return;
+        if (stack == null || stack.isEmpty() || !OxidationRegistry.isEligibleForward(stack)) return;
 
         // Ensure the stack has an item id so storage is stable
         String id = ItemIdHelper.ensureId(stack);
@@ -24,7 +24,7 @@ public final class TickSaveUtils {
     }
 
     public static void loadFromStack(ServerPlayerEntity player, ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return;
+        if (stack == null || stack.isEmpty() || !OxidationRegistry.isEligibleForward(stack)) return;
 
         String id = ItemIdHelper.ensureId(stack);
         Integer ticks = stack.get(ModComponents.HELD_TICKS);

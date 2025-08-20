@@ -4,6 +4,9 @@
   "package": "net.not_thefirst.oxidizing_tools.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ScreenTitleMixin",
+    "HandledScreenAccessor",
+    "HandledScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

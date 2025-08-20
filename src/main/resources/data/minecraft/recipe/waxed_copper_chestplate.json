@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "waxed_chestplate",
+  "ingredients": [
+    "minecraft:copper_chestplate",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:waxed_copper_chestplate"
+  }
+}

@@ -3,6 +3,7 @@ package net.not_thefirst.oxidizing_tools.ticking;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.not_thefirst.oxidizing_tools.OxidizingTools;
 import net.not_thefirst.oxidizing_tools.components.ItemIdHelper;
@@ -13,29 +14,31 @@ import net.not_thefirst.oxidizing_tools.utilities.ItemUtils;
 
 import java.util.Map;
 
+import org.jetbrains.annotations.Nullable;
+
 public class OxidationTickHandler {
 
     public static void onServerTick(MinecraftServer server) {
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             Map<String, Integer> playerTicks = InMemoryTicks.computeIfAbsent(player.getUuid());
 
-            // Tick main hand slot
-            tickStack(player, player.getInventory().getMainHandStack(), playerTicks);
+            tickStack(player, player.getMainHandStack(), playerTicks, Hand.MAIN_HAND, -1);
+            tickStack(player, player.getOffHandStack(), playerTicks, Hand.OFF_HAND, -1);
 
-            // Tick offhand slot
-            tickStack(player, player.getOffHandStack(), playerTicks);
-
-            // Optionally tick armor or other slots if needed
+            for (int slot = 0; slot < player.getInventory().armor.size(); slot++) {
+                ItemStack stack = player.getInventory().armor.get(slot);
+                tickStack(player, stack, playerTicks, null, slot);
+            }
         }
     }
 
     public static boolean isStackEligible(ItemStack stack) {
-        return OxidationRegistry.OXIDATION_CHAIN.containsKey(stack.getItem());
+        return OxidationRegistry.isEligible(stack);
     }
 
-    private static void tickStack(ServerPlayerEntity player, ItemStack stack, Map<String, Integer> playerTicks) {
+    private static void tickStack(ServerPlayerEntity player, ItemStack stack, Map<String, Integer> playerTicks, @Nullable Hand hand, int armorSlot) {
         if (stack.isEmpty()) return;
-        if (!isStackEligible(stack)) return;
+        if (!OxidationRegistry.isEligibleForward(stack)) return;
 
         String itemId = ItemIdHelper.ensureId(stack);
         int ticks = playerTicks.getOrDefault(itemId, 0) + 1;
@@ -44,18 +47,17 @@ public class OxidationTickHandler {
         if (ticks >= OxidationRegistry.STAGE_DURATION_TICKS) {
             ItemStack newStack = ItemUtils.SwapInPlace(
                 stack,
-                OxidationRegistry.OXIDATION_CHAIN.get(stack.getItem())
+                OxidationRegistry.getNext(stack.getItem())
             );
             newStack.set(ModComponents.HELD_TICKS, 0);
             ItemIdHelper.ensureId(newStack);
 
-            // Replace in player’s hand
-            if (player.getMainHandStack() == stack) {
-                player.setStackInHand(Hand.MAIN_HAND, newStack);
-            } else if (player.getOffHandStack() == stack) {
-                player.setStackInHand(Hand.OFF_HAND, newStack);
+            // Replace depending on where it was
+            if (hand != null) {
+                player.setStackInHand(hand, newStack);
+            } else if (armorSlot >= 0) {
+                player.getInventory().armor.set(armorSlot, newStack);
             }
-
             playerTicks.put(ItemIdHelper.getId(newStack), 0);
         }
     }
@@ -66,7 +68,7 @@ public class OxidationTickHandler {
 
         for (int slot = 0; slot < player.getInventory().size(); slot++) {
             ItemStack stack = player.getInventory().getStack(slot);
-            if (stack.isEmpty()) continue;
+            if (stack.isEmpty() || !OxidationRegistry.isEligibleForward(stack)) continue;
 
             String itemId = ItemIdHelper.getId(stack);
             if (itemId == null) continue;

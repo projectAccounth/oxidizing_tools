@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "waxed_hoe",
+  "ingredients": [
+    "minecraft:exposed_copper_hoe",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:waxed_exposed_copper_hoe"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "waxed_helmet",
+  "ingredients": [
+    "minecraft:oxidized_copper_helmet",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:waxed_oxidized_copper_helmet"
+  }
+}

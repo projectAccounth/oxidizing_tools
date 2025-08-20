@@ -9,7 +9,7 @@ import net.not_thefirst.oxidizing_tools.OxidizingTools;
 import net.not_thefirst.oxidizing_tools.components.ItemIdHelper;
 import net.not_thefirst.oxidizing_tools.components.ModComponents;
 import net.not_thefirst.oxidizing_tools.registry.InMemoryTicks;
-import net.not_thefirst.oxidizing_tools.ticking.OxidationTickHandler;
+import net.not_thefirst.oxidizing_tools.registry.OxidationRegistry;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -28,7 +28,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
         for (int slot = 0; slot < inv.size(); slot++) {
             ItemStack stack = inv.getStack(slot);
-            if (!stack.isEmpty()) {
+            if (!stack.isEmpty() && OxidationRegistry.isEligibleForward(stack)) {
                 String itemId = ItemIdHelper.ensureId(stack);
 
                 if (stack.contains(ModComponents.HELD_TICKS)) {
@@ -64,7 +64,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
         ItemStack newStack = inv.getStack(newSlot);
 
         // Save old stack's ticks
-        if (!oldStack.isEmpty() && OxidationTickHandler.isStackEligible(oldStack)) {
+        if (!oldStack.isEmpty() && OxidationRegistry.isEligibleForward(oldStack)) {
             String oldId = ItemIdHelper.ensureId(oldStack);
 
             // First write memory ticks to the stack itself
@@ -76,7 +76,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
         }
 
         // Restore new stack's ticks
-        if (!newStack.isEmpty() && OxidationTickHandler.isStackEligible(newStack)) {
+        if (!newStack.isEmpty() && OxidationRegistry.isEligibleForward(newStack)) {
             String newId = ItemIdHelper.ensureId(newStack);
             int ticks = InMemoryTicks.getOrCreateTicks(player.getUuid(), newId);
             if (ticks > 0) {

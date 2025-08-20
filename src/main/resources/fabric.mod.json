@@ -18,7 +18,11 @@
     ]
   },
   "mixins": [
-    "oxidizing_tools.mixins.json"
+    "oxidizing_tools.mixins.json",
+    {
+			"config": "oxidizing_tools.client.mixins.json",
+			"environment": "client"
+		}
   ],
   "depends": {
     "fabricloader": ">=0.16.10",

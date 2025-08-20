@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "waxed_boots",
+  "ingredients": [
+    "minecraft:oxidized_copper_boots",
+    "minecraft:honeycomb"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:waxed_oxidized_copper_boots"
+  }
+}

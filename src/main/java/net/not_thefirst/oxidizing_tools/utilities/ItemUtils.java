@@ -13,16 +13,9 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.not_thefirst.oxidizing_tools.OxidizingTools;
-import net.not_thefirst.oxidizing_tools.components.ModComponents;
 
 public class ItemUtils {
     private static final Item.Settings DEFAULT_SETTINGS = new Item.Settings();
-
-    public static void IncrementHeldTicks(ItemStack stack) {
-        int ticks = stack.getOrDefault(ModComponents.HELD_TICKS, 0);
-        stack.set(ModComponents.HELD_TICKS, ticks + 1);
-    }
-
     /**
     *   @brief Swaps the current ItemStack's Item with an another Item instance, while preserving the underlying data.
     *   Only the model and the translation name (name that is not custom) will be changed respectively.
@@ -35,7 +28,7 @@ public class ItemUtils {
 
         for (ComponentType<?> type : components.getTypes()) {
             if (type == DataComponentTypes.ITEM_MODEL) continue;
-            if (type == DataComponentTypes.CUSTOM_NAME && oldStack.getCustomName() == null) continue;
+            if (type == DataComponentTypes.ITEM_NAME) continue;
 
             @SuppressWarnings("unchecked")
             ComponentType<Object> objType = (ComponentType<Object>) type;
@@ -47,6 +40,8 @@ public class ItemUtils {
         }
         
         newStack.set(DataComponentTypes.ITEM_MODEL, defaultComp.get(DataComponentTypes.ITEM_MODEL));
+        if (oldStack.getCustomName() == null)
+            newStack.set(DataComponentTypes.ITEM_NAME, defaultComp.get(DataComponentTypes.ITEM_NAME));
 
         return newStack;
     }

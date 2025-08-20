@@ -17,7 +17,7 @@ import net.not_thefirst.oxidizing_tools.OxidizingTools;
 import net.not_thefirst.oxidizing_tools.components.ItemIdHelper;
 import net.not_thefirst.oxidizing_tools.components.ModComponents;
 import net.not_thefirst.oxidizing_tools.registry.InMemoryTicks;
-import net.not_thefirst.oxidizing_tools.ticking.OxidationTickHandler;
+import net.not_thefirst.oxidizing_tools.registry.OxidationRegistry;
 import net.not_thefirst.oxidizing_tools.utilities.TickSaveUtils;
 
 @Mixin(PlayerInventory.class)
@@ -32,7 +32,7 @@ public abstract class PlayerInventoryMixin {
         PlayerEntity player = inv.player;
         if (player == null || player.getWorld().isClient) return;
         if (!(player instanceof ServerPlayerEntity serverPlayer)) return;
-        if (!OxidationTickHandler.isStackEligible(newStack)) return;
+        if (!OxidationRegistry.isEligibleForward(newStack)) return;
 
         ItemStack oldStack = inv.getStack(slot);
         if (oldStack.isEmpty()) return;
@@ -78,7 +78,7 @@ public abstract class PlayerInventoryMixin {
             at = @At("HEAD"))
     private void beforeInsert(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         PlayerEntity player = ((PlayerInventory)(Object)this).player;
-        if (player.getWorld().isClient || stack.isEmpty() || !OxidationTickHandler.isStackEligible(stack)) return;
+        if (player.getWorld().isClient || stack.isEmpty() || !OxidationRegistry.isEligibleForward(stack)) return;
 
         // Preserve ticks before the stack gets copied
         String itemId = ItemIdHelper.ensureId(stack);

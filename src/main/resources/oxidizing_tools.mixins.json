@@ -4,6 +4,9 @@
   "package": "net.not_thefirst.oxidizing_tools.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "screen.GrindstoneScreenHandlerMixin",
+    "screen.GrindstoneOutputSlotMixin",
+    "screen.GrindstoneScreenHandlerAccessor",
     "item.ItemStackTooltipMixin",
     "item.ItemStackMixin",
     "gui.ScreenHandlerMixin",
